@@ -1,0 +1,22 @@
+<!-- templates/transaction_history.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ customer.name }}'s Transaction History</title>
+</head>
+<body>
+    <h1>{{ customer.name }}'s Transaction History</h1>
+
+    <h2>Transactions</h2>
+    <ul>
+        {% for transaction in transactions %}
+            <li>{{ transaction.timestamp }} - {{ transaction.amount }} ({{ transaction.transaction_type }})</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'account_details' customer.id %}">Back to Account Details</a>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!-- templates/make_transaction.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Make Transaction</title>
+</head>
+<body>
+    <h1>Make Transaction</h1>
+
+    <form method="post" action="">
+        {% csrf_token %}
+        {{ transaction_form.as_p }}
+        <button type="submit">Submit Transaction</button>
+    </form>
+
+    <a href="{% url 'account_details' customer.id %}">Back to Account Details</a>
+</body>
+</html>

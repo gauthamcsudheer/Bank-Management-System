@@ -8,4 +8,7 @@ urlpatterns = [
     path('account/<int:customer_id>/', views.account_details, name='account_details'),
 
     path('signup/', views.signup, name='signup'),
+
+    path('transaction-history/<int:customer_id>/', views.transaction_history, name='transaction_history'),
+    path('make-transaction/<int:customer_id>/', views.make_transaction, name='make_transaction'),
 ]

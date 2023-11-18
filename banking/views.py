@@ -41,6 +41,59 @@ def account_details(request, customer_id):
 
     return render(request, 'account_details.html', {'customer': customer, 'account': account, 'transactions': transactions, 'transaction_form': transaction_form})
 
+# banking/views.py
+
+from django.shortcuts import render, redirect, get_object_or_404
+from .forms import SignupForm, TransactionForm
+from .models import Customer, Account, Transaction
+
+def customer_list(request):
+    customers = Customer.objects.all()
+    return render(request, 'customer_list.html', {'customers': customers})
+
+def account_details(request, customer_id):
+    customer = get_object_or_404(Customer, pk=customer_id)
+    account = get_object_or_404(Account, customer=customer)
+    return render(request, 'account_details.html', {'customer': customer, 'account': account})
+
+def transaction_history(request, customer_id):
+    customer = get_object_or_404(Customer, pk=customer_id)
+    transactions = Transaction.objects.filter(account__customer=customer)
+    return render(request, 'transaction_history.html', {'customer': customer, 'transactions': transactions})
+
+def make_transaction(request, customer_id):
+    customer = get_object_or_404(Customer, pk=customer_id)
+    
+    if request.method == 'POST':
+        transaction_form = TransactionForm(request.POST)
+        if transaction_form.is_valid():
+            amount = transaction_form.cleaned_data['amount']
+            transaction_type = transaction_form.cleaned_data['transaction_type']
+
+            account = get_object_or_404(Account, customer=customer)
+
+            if transaction_type == 'deposit':
+                account.balance += amount
+            elif transaction_type == 'withdraw':
+                if amount <= account.balance:
+                    account.balance -= amount
+                else:
+                    # Handle insufficient funds error
+                    return render(request, 'make_transaction.html', {'customer': customer, 'error': 'Insufficient funds'})
+
+            # Save the transaction
+            Transaction.objects.create(account=account, amount=amount, transaction_type=transaction_type)
+            
+            # Update the account balance
+            account.save()
+
+            # Redirect to the account details page
+            return redirect('account_details', customer_id=customer.id)
+    else:
+        transaction_form = TransactionForm()
+
+    return render(request, 'make_transaction.html', {'customer': customer, 'transaction_form': transaction_form})
+
 def signup(request):
     if request.method == 'POST':
         form = SignupForm(request.POST)

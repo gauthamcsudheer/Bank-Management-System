@@ -15,23 +15,9 @@
     <p>Email: {{ customer.email }}</p>
     <p>Balance: ${{ account.balance }}</p>
 
-    <h2>Transaction History</h2>
-    <ul>
-        {% for transaction in transactions %}
-            <li>{{ transaction.timestamp }} - {{ transaction.amount }} ({{ transaction.transaction_type }})</li>
-        {% endfor %}
-    </ul>
-
-    <h2>Make Transaction</h2>
-    <form method="post" action="">
-        {% csrf_token %}
-        {{ transaction_form.as_p }}
-        <button type="submit">Submit Transaction</button>
-    </form>
-
-    {% if error %}
-        <p style="color: red;">{{ error }}</p>
-    {% endif %}
+    <h2>Actions</h2>
+    <a href="{% url 'transaction_history' customer.id %}"><button>Transaction History</button></a>
+    <a href="{% url 'make_transaction' customer.id %}"><button>Make Transaction</button></a>
 
     <a href="{% url 'customer_list' %}">Back to Customer List</a>
 </body>
