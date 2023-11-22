@@ -1,10 +1,12 @@
 # banking/models.py
-
 from django.db import models
+from django.contrib.auth.models import User
 
 class Customer(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
+
 
 class Account(models.Model):
     customer = models.OneToOneField(Customer, on_delete=models.CASCADE)

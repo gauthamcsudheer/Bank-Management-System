@@ -9,6 +9,8 @@ urlpatterns = [
 
     path('signup/', views.signup, name='signup'),
 
+    path('login/', views.login_view, name='login'),
+
     path('transaction-history/<int:customer_id>/', views.transaction_history, name='transaction_history'),
     path('make-transaction/<int:customer_id>/', views.make_transaction, name='make_transaction'),
 ]
