@@ -59,13 +59,14 @@ def make_transaction(request, customer_id):
 
 def signup(request):
     if request.method == 'POST':
-        form = SignupForm(request.POST)
+        form = SignupForm(request.POST, request.FILES)
         if form.is_valid():
             # Extract data from the form
             name = form.cleaned_data['name']
             email = form.cleaned_data['email']
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
+            photo = form.cleaned_data['photo']
 
             try:
                 # Try to create a new User
@@ -74,11 +75,16 @@ def signup(request):
                 # If successful, create a new Customer
                 customer = Customer.objects.create(user=user, name=name, email=email)
 
+                # Set the photo if provided
+                if photo:
+                    customer.photo = photo
+                    customer.save()
+
                 # Create a corresponding account for the customer
                 Account.objects.create(customer=customer, balance=0.0)
 
                 # Redirect to the customer list or any other page
-                return redirect('customer_list')
+                return redirect('login')
 
             except IntegrityError:
                 # Handle the case where the username already exists

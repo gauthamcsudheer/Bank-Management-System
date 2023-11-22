@@ -6,6 +6,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ customer.name }}'s Account Details</title>
+    <style>
+        /* CSS to set the width of the image */
+        img {
+            max-width: 240px;
+            height: auto;
+        }
+    </style>
 </head>
 <body>
     <h1>{{ customer.name }}'s Account Details</h1>
@@ -14,6 +21,13 @@
     <p>Account Holder: {{ customer.name }}</p>
     <p>Email: {{ customer.email }}</p>
     <p>Balance: ${{ account.balance }}</p>
+
+    <!-- Display the customer's photo -->
+    {% if customer.photo %}
+        <img src="{{ customer.photo.url }}" alt="{{ customer.name }}'s Photo">
+    {% else %}
+        <p>No photo available</p>
+    {% endif %}
 
     <h2>Actions</h2>
     <a href="{% url 'transaction_history' customer.id %}"><button>Transaction History</button></a>
