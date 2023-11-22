@@ -20,7 +20,7 @@
     <h2>Account Information</h2>
     <p>Account Holder: {{ customer.name }}</p>
     <p>Email: {{ customer.email }}</p>
-    <p>Balance: ${{ account.balance }}</p>
+    <p>Balance: ₹{{ account.balance }}</p>
 
     <!-- Display the customer's photo -->
     {% if customer.photo %}
@@ -32,6 +32,14 @@
     <h2>Actions</h2>
     <a href="{% url 'transaction_history' customer.id %}"><button>Transaction History</button></a>
     <a href="{% url 'make_transaction' customer.id %}"><button>Make Transaction</button></a>
+
+
+     <!-- Logout form -->
+     <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+    </form>
+
 
     <a href="{% url 'customer_list' %}">Back to Customer List</a>
 </body>

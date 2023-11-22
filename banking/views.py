@@ -5,6 +5,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.db import IntegrityError 
 
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
+
 from .forms import LoginForm
 
 from .forms import SignupForm, TransactionForm
@@ -14,8 +17,14 @@ def customer_list(request):
     customers = Customer.objects.all()
     return render(request, 'customer_list.html', {'customers': customers})
 
+@login_required
 def account_details(request, customer_id):
     customer = get_object_or_404(Customer, pk=customer_id)
+    
+    # Check if the logged-in user matches the requested customer's user
+    if request.user != customer.user:
+        raise PermissionDenied("You don't have permission to view this account.")
+    
     account = get_object_or_404(Account, customer=customer)
     return render(request, 'account_details.html', {'customer': customer, 'account': account})
 
