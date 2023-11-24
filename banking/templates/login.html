@@ -75,6 +75,11 @@
             margin-left: 50px;
             font-size: 25px;
         }
+
+        .error-message {
+            color: #ff0000;
+            margin-top: 10px;
+        }
     </style>
 
 </head>
@@ -91,6 +96,9 @@
             {% csrf_token %}
             <input type="text" name="username" id="uname" placeholder="Username" class="content">
             <input type="password" name="password" id="pass" placeholder="Password" class="content">
+            {% if form.non_field_errors %}
+                <p class="error-message">{{ form.non_field_errors }}</p>
+            {% endif %}
             <button type="submit" class="but">Log In</button>
         </form>
     </div>

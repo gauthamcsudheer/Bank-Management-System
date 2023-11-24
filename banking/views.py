@@ -75,29 +75,38 @@ def signup(request):
             email = form.cleaned_data['email']
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
+            confirm_password = form.cleaned_data['confirm_password']
             photo = form.cleaned_data['photo']
 
-            try:
-                # Try to create a new User
-                user = User.objects.create_user(username=username, email=email, password=password)
+            if password == confirm_password:
+                try:
+                    # Try to create a new User
+                    user = User.objects.create_user(username=username, email=email, password=password)
 
-                # If successful, create a new Customer
-                customer = Customer.objects.create(user=user, name=name, email=email)
+                    # If successful, create a new Customer
+                    customer = Customer.objects.create(user=user, name=name, email=email)
 
-                # Set the photo if provided
-                if photo:
-                    customer.photo = photo
-                    customer.save()
+                    # Set the photo if provided
+                    if photo:
+                        customer.photo = photo
+                        customer.save()
 
-                # Create a corresponding account for the customer
-                Account.objects.create(customer=customer, balance=0.0)
+                    # Create a corresponding account for the customer
+                    Account.objects.create(customer=customer, balance=0.0)
 
-                # Redirect to the customer list or any other page
-                return redirect('login')
+                    # Redirect to the customer list or any other page
+                    return redirect('login')
 
-            except IntegrityError:
-                # Handle the case where the username already exists
-                form.add_error('username', 'This username is already taken. Please choose a different one.')
+                except IntegrityError:
+                    # Handle the case where the username already exists
+                    form.add_error('username', 'This username is already taken. Please choose a different one.')
+
+            else:
+                form.add_error('confirm_password', 'Passwords do not match. Please enter matching passwords.')
+
+        # Include the form with errors in the context
+        # even if there is a CSRF verification failure
+        return render(request, 'signup.html', {'form': form})
 
     else:
         form = SignupForm()
