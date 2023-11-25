@@ -1,19 +1,19 @@
-<!-- templates/make_transaction.html -->
+<!-- templates/make_withdrawal.html -->
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Make Transaction</title>
+    <title>Make Withdrawal</title>
 </head>
 <body>
-    <h1>Make Transaction</h1>
+    <h1>Make Withdrawal</h1>
 
     <form method="post" action="">
         {% csrf_token %}
-        {{ transaction_form.as_p }}
-        <button type="submit">Submit Transaction</button>
+        {{ withdrawal_form.as_p }}
+        <button type="submit">Submit Withdrawal</button>
     </form>
 
     <a href="{% url 'account_details' customer.id %}">Back to Account Details</a>

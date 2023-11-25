@@ -22,6 +22,12 @@ class LoginForm(forms.Form):
     username = forms.CharField(label='Username', max_length=100)
     password = forms.CharField(label='Password', widget=forms.PasswordInput)
 
-class TransactionForm(forms.Form):
+class DepositForm(forms.Form):
     amount = forms.DecimalField(label='Amount', min_value=0.01)
-    transaction_type = forms.ChoiceField(label='Transaction Type', choices=[('deposit', 'Deposit'), ('withdraw', 'Withdraw')])
+
+class WithdrawalForm(forms.Form):
+    amount = forms.DecimalField(label='Amount', min_value=0.01)
+
+class TransferForm(forms.Form):
+    recipient_username = forms.CharField(label='Recipient Username', max_length=100)
+    amount = forms.DecimalField(label='Amount', min_value=0.01)

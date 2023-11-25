@@ -1,0 +1,21 @@
+<!-- templates/make_deposit.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Make Deposit</title>
+</head>
+<body>
+    <h1>Make Deposit</h1>
+
+    <form method="post" action="">
+        {% csrf_token %}
+        {{ deposit_form.as_p }}
+        <button type="submit">Submit Deposit</button>
+    </form>
+
+    <a href="{% url 'account_details' customer.id %}">Back to Account Details</a>
+</body>
+</html>
