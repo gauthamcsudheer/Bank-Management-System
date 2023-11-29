@@ -1,5 +1,6 @@
 # banking/views.py
 
+import random
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db import IntegrityError 
@@ -9,7 +10,8 @@ from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
-from django.contrib import messages
+
+from decimal import Decimal
 
 from .forms import LoginForm
 
@@ -36,57 +38,14 @@ def transaction_history(request, customer_id):
     transactions = Transaction.objects.filter(account__customer=customer)
     return render(request, 'transaction_history.html', {'customer': customer, 'transactions': transactions})
 
-def make_deposit(request, customer_id):
-    customer = get_object_or_404(Customer, pk=customer_id)
-
-    if request.method == 'POST':
-        deposit_form = DepositForm(request.POST)
-        if deposit_form.is_valid():
-            amount = deposit_form.cleaned_data['amount']
-
-            account = get_object_or_404(Account, customer=customer)
-            account.balance += amount
-            account.save()
-
-            # Save the transaction
-            Transaction.objects.create(account=account, amount=amount, transaction_type='deposit')
-
-            # Redirect to the account details page
-            return redirect('account_details', customer_id=customer.id)
-    else:
-        deposit_form = DepositForm()
-
-    template_name = 'make_deposit.html'
-    return render(request, template_name, {'customer': customer, 'deposit_form': deposit_form})
-
-def make_withdrawal(request, customer_id):
-    customer = get_object_or_404(Customer, pk=customer_id)
-
-    if request.method == 'POST':
-        withdrawal_form = WithdrawalForm(request.POST)
-        if withdrawal_form.is_valid():
-            amount = withdrawal_form.cleaned_data['amount']
-
-            account = get_object_or_404(Account, customer=customer)
-
-            if amount <= account.balance:
-                account.balance -= amount
-                account.save()
-
-                # Save the transaction
-                Transaction.objects.create(account=account, amount=amount, transaction_type='withdraw')
-
-                # Redirect to the account details page
-                return redirect('account_details', customer_id=customer.id)
-            else:
-                # Handle insufficient funds error
-                return render(request, 'make_transaction.html', {'customer': customer, 'error': 'Insufficient funds'})
-
-    else:
-        withdrawal_form = WithdrawalForm()
-
-    template_name = 'make_withdrawal.html'
-    return render(request, template_name, {'customer': customer, 'withdrawal_form': withdrawal_form})
+def generate_unique_account_number():
+    """
+    Generate a unique 6-digit account number.
+    """
+    while True:
+        account_number = random.randint(100000, 999999)
+        if not Account.objects.filter(account_number=account_number).exists():
+            return account_number
 
 def signup(request):
     if request.method == 'POST':
@@ -108,13 +67,16 @@ def signup(request):
                     # If successful, create a new Customer
                     customer = Customer.objects.create(user=user, name=name, email=email)
 
+                    # Generate a unique 6-digit account number
+                    account_number = generate_unique_account_number()
+
                     # Set the photo if provided
                     if photo:
                         customer.photo = photo
                         customer.save()
 
                     # Create a corresponding account for the customer
-                    Account.objects.create(customer=customer, balance=0.0)
+                    Account.objects.create(customer=customer, account_number=account_number, balance=0.0)
 
                     # Redirect to the customer list or any other page
                     return redirect('login')
@@ -161,6 +123,68 @@ def login_view(request):
 
     return render(request, 'login.html', {'form': form})
 
+
+@login_required
+def make_deposit(request, customer_id):
+    customer = get_object_or_404(Customer, pk=customer_id)
+
+    if request.method == 'POST':
+        deposit_form = DepositForm(request.POST)
+        if deposit_form.is_valid():
+            amount = deposit_form.cleaned_data['amount']
+
+            account = get_object_or_404(Account, customer=customer)
+            
+            # Convert 'amount' to Decimal to ensure consistency
+            amount = Decimal(amount)
+
+            account.balance += amount
+            account.save()
+
+            # Save the transaction
+            Transaction.objects.create(account=account, amount=amount, transaction_type='deposit')
+
+            # Redirect to the account details page
+            return redirect('account_details', customer_id=customer.id)
+    else:
+        deposit_form = DepositForm()
+
+    template_name = 'make_deposit.html'
+    return render(request, template_name, {'customer': customer, 'deposit_form': deposit_form})
+
+@login_required
+def make_withdrawal(request, customer_id):
+    customer = get_object_or_404(Customer, pk=customer_id)
+
+    if request.method == 'POST':
+        withdrawal_form = WithdrawalForm(request.POST)
+        if withdrawal_form.is_valid():
+            amount = withdrawal_form.cleaned_data['amount']
+
+            account = get_object_or_404(Account, customer=customer)
+
+            # Convert 'amount' to Decimal to ensure consistency
+            amount = Decimal(amount)
+
+            if amount <= account.balance:
+                account.balance -= amount
+                account.save()
+
+                # Save the transaction
+                Transaction.objects.create(account=account, amount=amount, transaction_type='withdraw')
+
+                # Redirect to the account details page
+                return redirect('account_details', customer_id=customer.id)
+            else:
+                # Handle insufficient funds error
+                return render(request, 'make_transaction.html', {'customer': customer, 'error': 'Insufficient funds'})
+
+    else:
+        withdrawal_form = WithdrawalForm()
+
+    template_name = 'make_withdrawal.html'
+    return render(request, template_name, {'customer': customer, 'withdrawal_form': withdrawal_form})
+
 @login_required
 def make_transfer(request, customer_id):
     sender = get_object_or_404(Customer, pk=customer_id)
@@ -168,33 +192,31 @@ def make_transfer(request, customer_id):
     if request.method == 'POST':
         transfer_form = TransferForm(request.POST)
         if transfer_form.is_valid():
-            recipient_username = transfer_form.cleaned_data['recipient_username']
+            recipient_account_number = transfer_form.cleaned_data['recipient_account_number']
             amount = transfer_form.cleaned_data['amount']
 
             try:
-                # Get the recipient's user object
-                recipient_user = User.objects.get(username=recipient_username)
-                recipient_customer = Customer.objects.get(user=recipient_user)
+                recipient_account = Account.objects.get(account_number=recipient_account_number)
+                recipient_customer = recipient_account.customer
 
-            except User.DoesNotExist:
-                # Handle the case where the username is not found
-                error_message = f'User with username "{recipient_username}" not found.'
+            except Account.DoesNotExist:
+                error_message = f'Account with number "{recipient_account_number}" not found.'
                 return render(request, 'make_transfer.html', {'sender': sender, 'transfer_form': transfer_form, 'error': error_message})
 
-            # Check if the logged-in user is not the same as the recipient
             if sender == recipient_customer:
                 error_message = 'You cannot transfer money to yourself.'
                 return render(request, 'make_transfer.html', {'sender': sender, 'transfer_form': transfer_form, 'error': error_message})
 
-            # Check if the logged-in user has sufficient funds
             sender_account = get_object_or_404(Account, customer=sender)
             if amount <= sender_account.balance:
+                # Convert 'amount' to Decimal to ensure consistency
+                amount = Decimal(amount)
+
                 # Deduct the amount from the sender's account
                 sender_account.balance -= amount
                 sender_account.save()
 
                 # Add the amount to the recipient's account
-                recipient_account = get_object_or_404(Account, customer=recipient_customer)
                 recipient_account.balance += amount
                 recipient_account.save()
 
@@ -204,10 +226,8 @@ def make_transfer(request, customer_id):
                 # Save the transaction for the recipient
                 Transaction.objects.create(account=recipient_account, amount=amount, transaction_type='transfer_receive')
 
-                # Redirect to the account details page for the sender
                 return redirect('account_details', customer_id=sender.id)
             else:
-                # Handle insufficient funds error
                 error_message = 'Insufficient funds to make the transfer.'
                 return render(request, 'make_transfer.html', {'sender': sender, 'transfer_form': transfer_form, 'error': error_message})
 

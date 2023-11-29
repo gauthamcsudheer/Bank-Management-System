@@ -29,5 +29,5 @@ class WithdrawalForm(forms.Form):
     amount = forms.DecimalField(label='Amount', min_value=0.01)
 
 class TransferForm(forms.Form):
-    recipient_username = forms.CharField(label='Recipient Username', max_length=100)
+    recipient_account_number = forms.IntegerField(label='Recipient Account Number')
     amount = forms.DecimalField(label='Amount', min_value=0.01)
