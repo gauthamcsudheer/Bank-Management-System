@@ -177,7 +177,8 @@ def make_withdrawal(request, customer_id):
                 return redirect('account_details', customer_id=customer.id)
             else:
                 # Handle insufficient funds error
-                return render(request, 'make_transaction.html', {'customer': customer, 'error': 'Insufficient funds'})
+                error_message = 'Insufficient funds'
+                return render(request, 'make_withdrawal.html', {'customer': customer, 'withdrawal_form': withdrawal_form, 'error': error_message})
 
     else:
         withdrawal_form = WithdrawalForm()

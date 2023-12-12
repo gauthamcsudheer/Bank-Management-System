@@ -1,21 +1,183 @@
-<!-- templates/make_withdrawal.html -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Make Withdrawal</title>
+    
+    {% load static %}
+
+    <style>
+        :root {
+            --bg-color: #FFEEEE;
+            --nav-bg-color: #FFAEAE;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: var(--bg-color);
+        }
+
+        .navbar {
+            background: var(--nav-bg-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0px 5.5vh;
+            height: 100px;
+            margin-bottom: 2vh;
+        }
+
+        .navbar .left {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 60px;
+            border-radius: 20px;
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        }
+
+        .navbar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+        }
+
+        .navbar .right {
+            background: #ffffff;
+            padding: 10px 10px;
+            border-radius: 20px;
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        }
+
+        .container {
+            display: block;
+            height: 60vh;
+            padding: 8vh;
+        }
+
+        .container .box {
+            display: flex;
+            border-radius: 60px;
+            justify-items: center;
+            flex-direction: column;
+            align-items: start;
+            background-color: #ffffff;
+            height: 100%;
+            padding: 20px 35px;
+            box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.25);
+        }
+
+        .container .box > div {
+            margin-bottom: 20px;
+        }
+
+        .container .box .title {
+            display: flex;
+            font-size: 45px;
+            font-family: Inter;
+            font-weight: 600;
+            word-wrap: break-word;
+        }
+
+        .container .box .inputBox {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container .box .inputBox .label {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-size: 22px;
+            font-family: Inter;
+            font-weight: 400;
+            word-wrap: break-word;
+        }
+
+        .container .box .inputBox .input {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px;
+        }
+
+        .container .box .inputBox .input input {
+            background-color: #F5F5F5;
+            border-radius: 16px;
+            padding: 8px;
+            font-size: 22px;
+            font-family: Open Sans;
+            font-weight: 300;
+            word-wrap: break-word;
+        }
+
+        .container .box .btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-left: 18vh;
+        }
+
+        .container .box .btn button {
+            border: none;
+            background-color: #FF6060;
+            font-size: 22px;
+            font-family: Open Sans;
+            font-weight: 600;
+            word-wrap: break-word;
+            border-radius: 24px;
+            padding: 7px 35px;
+            cursor: pointer; /* Add this to make the button clickable */
+        }
+
+        .container .box p {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Make Withdrawal</h1>
+    <nav class="navbar">
+        <div class="left">
+            <img src="{% static 'FGHK.png' %}" alt="logo">
+        </div>
+        <div class="right">
+            <a href="{% url 'account_details' customer_id=customer.id %}">
+                <img src="{% static 'home.svg' %}" alt="homeIcon">
+            </a>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="box">
+            <div class="title">Make Withdrawal</div>
+            <form method="post" action="">
+                {% csrf_token %}
+                <div class="inputBox">
+                    <div class="label">
+                        Amount:
+                    </div>
+                    <div class="input">
+                        {{ withdrawal_form.amount }}
+                    </div>
+                    
+                </div>
 
-    <form method="post" action="">
-        {% csrf_token %}
-        {{ withdrawal_form.as_p }}
-        <button type="submit">Submit Withdrawal</button>
-    </form>
+                {% if error %}
+                    <p>{{ error }}</p>
+                {% endif %}
 
-    <a href="{% url 'account_details' customer.id %}">Back to Account Details</a>
+                <div class="btn">
+                    <button type="submit">Confirm</button>
+                </div>
+            </form>            
+        </div>
+    </div>
 </body>
 </html>
