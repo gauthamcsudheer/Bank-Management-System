@@ -7,6 +7,7 @@ from django.core.exceptions import ValidationError
 class SignupForm(forms.Form):
     name = forms.CharField(label='Full Name', max_length=100)
     email = forms.EmailField(label='Email')
+    phone_number = forms.CharField(label='Phone Number', max_length=15)
     username = forms.CharField(label='Username', max_length=100)
     password = forms.CharField(label='Password', widget=forms.PasswordInput)
     confirm_password = forms.CharField(label='Confirm Password', widget=forms.PasswordInput)
@@ -16,9 +17,20 @@ class SignupForm(forms.Form):
         cleaned_data = super().clean()
         password = cleaned_data.get("password")
         confirm_password = cleaned_data.get("confirm_password")
+        phone_number = cleaned_data.get("phone_number")
 
         if password != confirm_password:
             raise forms.ValidationError("Passwords do not match. Please enter matching passwords.")
+
+        # Add any other form-level validation logic here
+
+        # Validate the phone number
+        if phone_number is not None:
+            # Add phone number validation logic here
+            pass
+
+        return cleaned_data
+        
 
 class LoginForm(forms.Form):
     username = forms.CharField(label='Username', max_length=100)

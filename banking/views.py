@@ -54,6 +54,7 @@ def signup(request):
             # Extract data from the form
             name = form.cleaned_data['name']
             email = form.cleaned_data['email']
+            phone_number = form.cleaned_data['phone_number']
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
             confirm_password = form.cleaned_data['confirm_password']
@@ -65,7 +66,7 @@ def signup(request):
                     user = User.objects.create_user(username=username, email=email, password=password)
 
                     # If successful, create a new Customer
-                    customer = Customer.objects.create(user=user, name=name, email=email)
+                    customer = Customer.objects.create(user=user, name=name, email=email, phone_number=phone_number)
 
                     # Generate a unique 6-digit account number
                     account_number = generate_unique_account_number()
@@ -78,7 +79,7 @@ def signup(request):
                     # Create a corresponding account for the customer
                     Account.objects.create(customer=customer, account_number=account_number, balance=0.0)
 
-                    # Redirect to the customer list or any other page
+                    # Redirect to the login page or any other page
                     return redirect('login')
 
                 except IntegrityError:

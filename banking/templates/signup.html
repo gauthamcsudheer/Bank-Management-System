@@ -114,13 +114,10 @@
 
             <!-- Display form fields and their errors -->
             {% for field in form %}
-                {% if field.name != 'photo' %}
-                    <input type="{{ field.field.widget.input_type }}" name="{{ field.name }}" placeholder="{{ field.label }}">
+                {% if field.name == 'phone_number' %}
+                    <input type="text" name="{{ field.name }}" placeholder="{{ field.label }}">
                 {% else %}
-                    <div class="file-input">
-                        <label class="file-label">Upload your photo</label>
-                        <input type="file" name="photo" accept="image/*">
-                    </div>
+                    <input type="{{ field.field.widget.input_type }}" name="{{ field.name }}" placeholder="{{ field.label }}">
                 {% endif %}
                 {% if field.errors %}
                     <div class="error-message">
