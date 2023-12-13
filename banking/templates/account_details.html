@@ -30,6 +30,7 @@
         h1 {
             margin: 0;
             margin-bottom: 1rem;
+            font-size: 40px;
         }
 
         a {
@@ -82,6 +83,7 @@
 
         .profile li {
             padding: 0.5rem 0;
+            font-size: 20px;
         }
 
         .transactions {
@@ -118,7 +120,6 @@
     </header>
 
     <main>
-        <h2>Banking Made Simple</h2>
 
         <div class="content-container">
             <div class="profile">
@@ -128,9 +129,10 @@
                     <h1>Welcome, {{ customer.name }}</h1>
 
                     <ul>
-                        <li>Account Number: {{ account.account_number }}</li>
+                        <li>Account Number: <b>{{ account.account_number }}</b></li>
                         <li>Email id: {{ customer.email }}</li>
                         <li>Phone Number: {{ customer.phone_number }}</li>
+                        <li>Current Balance: {{ account.balance }}</li>
                     </ul>
                 </div>
             </div>
