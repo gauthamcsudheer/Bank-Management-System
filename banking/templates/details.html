@@ -1,147 +1,122 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <title>FGHK Bank</title>
-    <style>
-        body {
-            font-family: sans-serif;
-            margin: 0;
-            background-color: #FFEEEE; /* Match background color in make_details.html */
-        }
+  <title>FGHK Bank</title>
+  <style>
+    body {
+  font-family: sans-serif;
+  margin: 0;
+}
 
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem;
-            background-color: #FFAEAE; /* Match nav-bg-color in make_details.html */
-            color: #fff;
-        }
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #000;
+  color: #fff;
+}
 
-        h1 {
-            margin: 0;
-        }
+h1 {
+  margin: 0;
+}
 
-        a {
-            text-decoration: none;
-            color: #fff;
-        }
+a {
+  text-decoration: none;
+  color: #fff;
+}
 
-        main {
-            padding: 2rem;
-        }
+main {
+  padding: 2rem;
+}
 
-        h2 {
-            margin-top: 0;
-        }
+h2 {
+  margin-top: 0;
+}
 
-        h3 {
-            margin-top: 0;
-            margin-bottom: 1rem;
-        }
+h3 {
+  margin-top: 1rem;
+}
 
-        .content-container {
-            background-color: #ffffff; /* White background color */
-            border-radius: 20px; /* Rounded corners */
-            padding: 20px; /* Adjust padding as needed */
-            box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.25); /* Optional box shadow */
-        }
+.profile {
+  display: flex;
+  align-items: center;
+}
 
-        .profile {
-            display: flex;
-            align-items: center;
-        }
+.profile img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
 
-        .profile img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            margin-right: 1rem; /* Add margin to separate image and text */
-        }
+.profile ul {
+  margin-left: 1rem;
+}
 
-        .profile-info {
-            display: flex;
-            flex-direction: column;
-        }
+.profile li {
+  list-style-type: none;
+  padding: 0.5rem 0;
+}
 
-        .profile ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-        }
+.transactions {
+  margin-top: 2rem;
+}
 
-        .profile li {
-            padding: 0.5rem 0;
-        }
+.transactions ul {
+  list-style-type: none;
+  padding: 0;
+}
 
-        .transactions {
-            margin-top: 2rem;
-        }
+.transactions li {
+  display: inline-block;
+  padding: 1rem;
+  background-color: #ccc;
+  margin-right: 1rem;
+}
 
-        .transactions ul {
-            list-style-type: none;
-            padding: 0;
-        }
+footer {
+  text-align: center;
+  padding: 1rem;
+  background-color: #000;
+  color: #fff;
+}
 
-        .transactions li {
-            display: inline-block;
-            padding: 1rem;
-            background-color: #FF6060; /* Match button background color in make_details.html */
-            margin-right: 1rem;
-            color: #fff;
-            border-radius: 24px;
-        }
-
-        footer {
-            text-align: center;
-            padding: 1rem;
-            background-color: #FFAEAE; /* Match nav-bg-color in make_details.html */
-            color: #fff;
-        }
-    </style>
+  </style>
 </head>
-
 <body>
-    <header>
-        <h1>FGHK Bank</h1>
-        <a href="#">Log Out</a>
-    </header>
+  <header>
+    <h1>FGHK Bank</h1>
+    <a href="#">Log Out</a>
+  </header>
 
-    <main>
-        <h2>Banking Made Simple</h2>
+  <main>
+    <h2>Banking Made Simple</h2>
+    <h3>Welcome, Gautham C Sudheer</h3>
 
-        <div class="content-container">
-            <div class="profile">
-                <img src="images/profile.jpg" alt="Profile photo">
+    <div class="profile">
+      <img src="images/profile.jpg" alt="Profile photo">
 
-                <div class="profile-info">
-                    <h3>Welcome, Gautham C Sudheer</h3>
+      <ul>
+        <li>Account Number: 123456</li>
+        <li>Email id: u2103092@rajagiri.edu.in</li>
+        <li>Phone Number: 7356021380</li>
+      </ul>
+    </div>
 
-                    <ul>
-                        <li>Account Number: 123456</li>
-                        <li>Email id: u2103092@rajagiri.edu.in</li>
-                        <li>Phone Number: 7356021380</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+    <div class="transactions">
+      <h3>Transactions</h3>
+      <ul>
+        <li>Deposit</li>
+        <li>Make a Payment</li>
+        <li>Transaction History</li>
+        <li>Loan Application</li>
+        <li>Manage Account</li>
+      </ul>
+    </div>
+  </main>
 
-        <div class="transactions">
-            <h3>Transactions</h3>
-            <ul>
-                <li>Deposit</li>
-                <li>Make a Payment</li>
-                <li>Transaction History</li>
-                <li>Loan Application</li>
-                <li>Manage Account</li>
-            </ul>
-        </div>
-    </main>
-
-    <footer>
-        <p>&copy; 2023 FGHK Bank</p>
-    </footer>
+  <footer>
+    <p>&copy; 2023 FGHK Bank</p>
+  </footer>
 </body>
-
 </html>
