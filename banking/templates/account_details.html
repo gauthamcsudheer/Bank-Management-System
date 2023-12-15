@@ -214,6 +214,30 @@
         </div>
     </main>
 
+    <script>
+        document.getElementById('logoutButton').addEventListener('click', function() {
+            // Perform AJAX logout request
+            fetch('{% url "logout" %}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Redirect to the login page after successful logout
+                    window.location.href = '{% url "login" %}';
+                } else {
+                    // Handle errors if needed
+                    console.error('Logout failed');
+                }
+            })
+            .catch(error => {
+                console.error('Error during logout:', error);
+            });
+        });
+    </script>
+
 </body>
 
 </html>

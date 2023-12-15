@@ -7,7 +7,7 @@ urlpatterns = [
     path('account/<int:customer_id>/', views.account_details, name='account_details'),
     path('signup/', views.signup, name='signup'),
     path('login/', views.login_view, name='login'),
-    path('logout/', LogoutView.as_view(), name='logout'),
+    path('logout/', LogoutView.as_view(next_page='login'), name='logout'),
     path('transaction-history/<int:customer_id>/', views.transaction_history, name='transaction_history'),
     path('make-deposit/<int:customer_id>/', views.make_deposit, name='make_deposit'),
     path('make-withdrawal/<int:customer_id>/', views.make_withdrawal, name='make_withdrawal'),
