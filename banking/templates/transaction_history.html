@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,14 +10,16 @@
 
     <style>
         :root {
-            --bg-color: #FFEEEE;
-            --nav-bg-color: #FFAEAE;
+            --bg-color: #F1DABF; /* Beige background color */
+            --nav-bg-color: #623B29; /* Dark brown navbar background color */
+            --table-bg-color: #FFFFFF; /* White table background color */
+            --box-shadow: rgba(0, 0, 0, 0.25); /* Box shadow color */
         }
 
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
-            background-color: var(--bg-color); /* Light Pink Background */
+            background-color: var(--bg-color);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -26,7 +27,7 @@
         }
 
         .navbar {
-            background: var(--nav-bg-color);
+            background-color: rgba(44, 32, 24, 0.75);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -38,12 +39,11 @@
 
         .navbar .left {
             display: flex;
-            justify-content: flex-start; /* Adjusted alignment */
+            justify-content: flex-start;
             align-items: center;
-            height: 75%; /* Adjusted height to match the navbar */
+            height: 75%;
             border-radius: 20px;
-            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-            margin: 20px; /* Added margin to the right */
+            margin: 20px;
         }
 
         .navbar img {
@@ -53,14 +53,14 @@
         }
 
         .navbar .right {
-            background: #ffffff;
+            background: var(--table-bg-color);
             border-radius: 20px;
             margin: 20px;
-            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+            box-shadow: 0px 4px 4px var(--box-shadow);
         }
 
         .navbar .right a img {
-            height: 100%; /* Ensure the home icon matches the navbar height */
+            height: 100%;
         }
 
         h2 {
@@ -75,11 +75,12 @@
         }
 
         th {
-            background-color: #FFEEEE; /* Light Pink Header Row Background */
+            background-color: rgba(44, 32, 24, 0.60);
+            color: #fff; /* White text color for header row */
         }
 
         tr:nth-child(even) {
-            background-color: #f9f9f9; /* Alternate Row Background Color */
+            background-color: var(--table-bg-color);
         }
 
         a {
@@ -91,17 +92,17 @@
         }
 
         .container {
-            margin-top: 20px;
+            margin-top: 40px;
             width: 90%;
-            background-color: #ffffff; /* White background for the container */
-            padding: 20px; /* Add padding for better aesthetics */
-            border-radius: 20px; /* Optional: Add border-radius for rounded corners */
-            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); /* Optional: Add box-shadow for a subtle effect */
+            background-color: var(--table-bg-color);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0px 4px 4px var(--box-shadow);
         }
 
         table {
-            width: 95%; /* Use 100% width for the table */
-            margin: 0 auto; /* Center the table horizontally */
+            width: 95%;
+            margin: 0 auto;
             border-collapse: collapse;
             margin-top: 1rem;
             margin-bottom: 1rem;
@@ -114,7 +115,7 @@
 
     <nav class="navbar">
         <div class="left">
-            <img src="{% static 'FGHK.png' %}" alt="logo">
+            <img src="{% static 'UCCBwhite-nobg.png' %}" alt="logo">
         </div>
         <div class="right">
             <a href="{% url 'account_details' customer_id=customer.id %}">
@@ -124,7 +125,7 @@
     </nav>
 
     <div class="container">
-        <h2>Transactions</h2>
+        <h2>Transaction History</h2>
         <table>
             <thead>
                 <tr>
