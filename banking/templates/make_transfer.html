@@ -1,25 +1,184 @@
-<!-- templates/make_transfer.html -->
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Make Transfer</title>
-</head>
-<body>
-    <h1>Make Transfer</h1>
 
-    {% if error %}
-        <p style="color: red;">{{ error }}</p>
-    {% endif %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+
+    {% load static %}
+
+    <style>
+        :root {
+            --bg-color: #F1DABF; /* Beige background color */
+            --nav-bg-color: #623B29; /* Dark brown navbar background color */
+            --form-bg-color: #FFFFFF; /* White form background color */
+            --input-bg-color: #F5F5F5; /* Light gray input background color */
+            --box-shadow: rgba(0, 0, 0, 0.25); /* Box shadow color */
+        }
+
+        body {
+            background: var(--bg-color);
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background-color: rgba(44, 32, 24, 0.75);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0px 5.5vh;
+            height: 100px;
+            margin-bottom: 2vh;
+            width: 100%;
+            box-shadow: 0px 4px 4px var(--box-shadow);
+        }
+
+        .navbar .left {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            height: 75%;
+            border-radius: 20px;
+            margin: 20px;
+        }
+
+        .navbar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+        }
+
+        .navbar .right {
+            background: #ffffff;
+            border-radius: 20px;
+            margin: 20px;
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        }
+
+        .navbar .right a img {
+            height: 100%;
+        }
+
+        h1 {
+            margin-top: 20px;
+            margin-bottom: 40px;
+            text-align: center;
+            font-family: 'Arial', sans-serif;
+            color: #2C2018; /* Dark brown text color */
+        }
+
+        p {
+            color: red;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 80%;
+            max-width: 600px;
+            margin-top: 40px;
+            padding: 20px;
+            border-radius: 20px;
+            background-color: var(--form-bg-color);
+            box-shadow: 0px 4px 16px var(--box-shadow);
+        }
+
+        input {
+            margin-left: 16px;
+            margin-bottom: 16px;
+            width: 200px;
+            height: 32px;
+            border-radius: 12px;
+
+            font-size: 20px;
+            font-weight: 300;
+        }
+        
+        button {
+            border: none;
+            background-color: #2C2018; /* Light red button background color */
+            font-size: 22px;
+            font-family: 'Arial', sans-serif;
+            font-weight: 600;
+            word-wrap: break-word;
+            border-radius: 24px;
+            padding: 10px 20px;
+            cursor: pointer;
+            color: #fff; /* White text color */
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #623B29; /* Dark brown hover color */
+            transition: 300ms;
+        }
+
+        a {
+            width: 40px;
+            height: 40px;
+            margin-right: 20px;
+        }
+
+        /* Add this style for the error message */
+        .error-message {
+            color: red;
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="navbar">
+        <div class="left">
+            <img src="{% static 'UCCBwhite-nobg.png' %}" alt="logo">
+        </div>
+        <div class="right">
+            <a href="{% url 'account_details' customer_id=sender.id %}">
+                <img src="{% static 'home.svg' %}" alt="homeIcon">
+            </a>
+        </div>
+    </div>
+
 
     <form method="post" action="{% url 'make_transfer' sender.id %}">
+
         {% csrf_token %}
-        {{ transfer_form.as_p }}
+
+        <h1>Make Transfer</h1>
+
+        {% if error %}
+            <p class="error-message">{{ error }}</p>
+        {% endif %}
+
+        <div class="inputBox">
+            {{ transfer_form.recipient_account_number.errors }}
+            {{ transfer_form.recipient_account_number.label_tag }}
+            {{ transfer_form.recipient_account_number }}
+        </div>
+        <div class="inputBox">
+            {{ transfer_form.amount.errors }}
+            {{ transfer_form.amount.label_tag }}(₹)
+            {{ transfer_form.amount }}
+        </div>
+
         <button type="submit">Transfer</button>
     </form>
 
-    <a href="{% url 'account_details' customer_id=sender.id %}">Back to Account Details</a>
 </body>
+
 </html>
