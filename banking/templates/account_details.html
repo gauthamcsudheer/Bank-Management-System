@@ -10,7 +10,7 @@
         body {
             font-family: sans-serif;
             margin: 0;
-            background-color: #FFEEEE;
+            background-color: #f1dabf;
         }
 
         header {
@@ -18,7 +18,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 1rem;
-            background-color: #FFAEAE;
+            background-color: rgba(255, 255, 255, 0.25);
             color: #fff;
         }
 
@@ -115,7 +115,7 @@
 
 <body>
     <header>
-        <img src="{% static 'FGHK.png' %}" alt="logo">
+        <img src="{% static 'UCCB-nobg.png' %}" alt="logo">
         <a href="{% url 'logout' %}">Log Out</a>
     </header>
 
@@ -132,7 +132,7 @@
                         <li>Account Number: <b>{{ account.account_number }}</b></li>
                         <li>Email id: {{ customer.email }}</li>
                         <li>Phone Number: {{ customer.phone_number }}</li>
-                        <li>Current Balance: {{ account.balance }}</li>
+                        <li>Current Balance: ₹{{ account.balance }}</li>
                     </ul>
                 </div>
             </div>

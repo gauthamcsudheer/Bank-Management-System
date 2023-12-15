@@ -76,7 +76,8 @@
         .file-label {
             font-size: 16px;
             color: #333;
-            margin-left: 10px; /* Add margin to separate the label from the input */
+            margin-left: 10px;
+            /* Add margin to separate the label from the input */
         }
 
         .submit-button {
@@ -92,6 +93,7 @@
 
         .submit-button:hover {
             background-color: #2c2018;
+            transition: 300ms;
         }
 
         .note {
@@ -160,8 +162,7 @@
             <button type="submit" class="submit-button">Sign Up</button>
         </form>
 
-        <!-- New paragraph for "Already has an account?" text -->
-        <p class="signin-link">Already has an account? <a href="{% url 'login' %}">Sign In</a></p>
+        <p class="signin-link">Already have an account? <a href="{% url 'login' %}">Sign In</a></p>
     </div>
 </body>
 
