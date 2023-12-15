@@ -9,8 +9,13 @@
 
     <style>
         :root {
-            --bg-color: #FFEEEE;
-            --nav-bg-color: #FFAEAE;
+            --bg-color: #F1DABF; /* Beige background color */
+            --nav-bg-color: #623B29; /* Dark brown navbar background color */
+            --btn-bg-color: #FF6060; /* Light red button background color */
+            --btn-hover-color: #FF4747; /* Darker red on hover */
+            --form-bg-color: #FFFFFF; /* White form background color */
+            --input-bg-color: #F5F5F5; /* Light gray input background color */
+            --box-shadow: rgba(0, 0, 0, 0.25); /* Box shadow color */
         }
 
         * {
@@ -23,7 +28,7 @@
         }
 
         .navbar {
-            background: var(--nav-bg-color);
+            background-color: rgba(44, 32, 24, 0.75);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -37,8 +42,6 @@
             justify-content: center;
             align-items: center;
             height: 60px;
-            border-radius: 20px;
-            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
         }
 
         .navbar img {
@@ -48,28 +51,33 @@
         }
 
         .navbar .right {
-            background: #ffffff;
+            background: white;
             padding: 10px 10px;
             border-radius: 20px;
-            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+            box-shadow: 0px 4px 4px var(--box-shadow);
         }
 
         .container {
-            display: block;
-            height: 60vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 40vh;
+            width: auto;
             padding: 8vh;
+            margin-top: 80px;
         }
 
         .container .box {
             display: flex;
-            border-radius: 60px;
-            justify-items: center;
             flex-direction: column;
-            align-items: start;
-            background-color: #ffffff;
+            border-radius: 60px;
+            align-items: center;
+            background-color: var(--form-bg-color);
             height: 100%;
             padding: 20px 35px;
-            box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.25);
+            box-shadow: 0px 4px 16px var(--box-shadow);
+            max-width: 480px; /* Adjusted width */
+            width: 100%;
         }
 
         .container .box > div {
@@ -79,65 +87,82 @@
         .container .box .title {
             display: flex;
             font-size: 45px;
-            font-family: Inter;
+            font-family: 'Inter', sans-serif;
             font-weight: 600;
             word-wrap: break-word;
+            color: #333; /* Dark text color */
         }
 
         .container .box .inputBox {
-            display: inline-flex;
+            display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
+            width: 80%;
+            margin-top: 20px;
+            margin-left: 40px;
         }
 
         .container .box .inputBox .label {
             display: flex;
+            margin-right: 12px;
             justify-content: center;
             align-items: center;
             text-align: center;
             font-size: 22px;
-            font-family: Inter;
+            font-family: 'Inter', sans-serif;
             font-weight: 400;
-            word-wrap: break-word;
+            width: 200px;
+            color: #333; /* Dark text color */
         }
 
         .container .box .inputBox .input {
             display: flex;
             justify-content: center;
             align-items: center;
-            margin: 20px;
+            width: 100%;
+            margin-top: 10px; /* Add margin-top to separate label and input */
         }
 
         .container .box .inputBox .input input {
-            background-color: #F5F5F5;
+            background-color: var(--input-bg-color);
             border-radius: 16px;
             padding: 8px;
             font-size: 22px;
-            font-family: Open Sans;
+            font-family: 'Open Sans', sans-serif;
             font-weight: 300;
             word-wrap: break-word;
+            width: 100%;
         }
 
         .container .box .btn {
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-left: 18vh;
+            width: 100%;
+            margin-top: 20px; /* Add margin-top to separate input and button */
         }
 
         .container .box .btn button {
             border: none;
-            background-color: #FF6060;
+            background-color: #2C2018;
             font-size: 22px;
-            font-family: Open Sans;
+            font-family: 'Open Sans', sans-serif;
             font-weight: 600;
             word-wrap: break-word;
             border-radius: 24px;
             padding: 7px 35px;
-            cursor: pointer; /* Add this to make the button clickable */
+            margin-top: 20px;
+            cursor: pointer;
+            color: #fff; /* White text color */
+            transition: background-color 0.3s ease; /* Add transition effect */
         }
 
-        .container .box p {
+        .container .box .btn button:hover {
+            background-color: #623B29
+        }
+
+        .container .box .error {
             color: red;
             margin-top: 10px;
         }
@@ -146,7 +171,7 @@
 <body>
     <nav class="navbar">
         <div class="left">
-            <img src="{% static 'FGHK.png' %}" alt="logo">
+            <img src="{% static 'UCCBwhite-nobg.png' %}" alt="logo"> <!-- Change the left icon -->
         </div>
         <div class="right">
             <a href="{% url 'account_details' customer_id=customer.id %}">
@@ -156,21 +181,20 @@
     </nav>
     <div class="container">
         <div class="box">
-            <div class="title">Make Withdrawal</div>
+            <div class="title">Withdraw</div>
             <form method="post" action="">
                 {% csrf_token %}
                 <div class="inputBox">
-                    <div class="label">
-                        Amount:
-                    </div>
                     <div class="input">
+                        <div class="label">
+                            Amount (₹):
+                        </div>
                         {{ withdrawal_form.amount }}
                     </div>
-                    
                 </div>
 
                 {% if error %}
-                    <p>{{ error }}</p>
+                    <p class="error">{{ error }}</p>
                 {% endif %}
 
                 <div class="btn">
