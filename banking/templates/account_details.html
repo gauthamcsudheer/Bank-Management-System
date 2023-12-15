@@ -4,6 +4,8 @@
 <head>
     <title>FGHK Bank</title>
 
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
     {% load static %}
 
     <style>
@@ -18,14 +20,37 @@
             justify-content: space-between;
             align-items: center;
             padding: 1rem;
-            background-color: rgba(255, 255, 255, 0.25);
+            background-color: rgba(44, 32, 24, 0.75);
             color: #fff;
         }
 
         header img {
-            height: 60px;
+            height: 70px;
             border-radius: 20px;
         }
+
+        header button {
+            height: 50px; /* Adjust the height as needed to match the navbar height */
+            color: #090909;
+            padding: 0.5em 1em; /* Adjust padding to center the text vertically */
+            font-size: 16px; /* Adjust the font size as needed */
+            border-radius: 0.5em;
+            background: #e8e8e8;
+            border: 1px solid #e8e8e8;
+            transition: all 0.3s;
+            box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.25);
+        }
+
+        header button:hover {
+            border: 1px solid #2C2018;
+            cursor: pointer;
+        }
+
+        header button:active {
+            box-shadow: 2px 2px 8px #c5c5c5,
+                        -2px -2px 8px #ffffff;
+        }
+
 
         h1 {
             margin: 0;
@@ -52,8 +77,9 @@
         }
 
         .content-container {
-            background-color: #ffffff;
+            background-color: rgba(255, 255, 255, 0.6);
             border-radius: 20px;
+            margin-top: 20px;
             padding: 20px;
             box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.25);
         }
@@ -64,6 +90,7 @@
         }
 
         .profile img {
+            margin-left: 32px;
             padding: 20px;
             height: 200px;
             border-radius: 40px;
@@ -71,6 +98,7 @@
         }
 
         .profile-info {
+            margin-left: 32px;
             display: flex;
             flex-direction: column;
         }
@@ -87,36 +115,69 @@
         }
 
         .transactions {
-            margin-top: 2rem;
+            margin: 0 auto; /* This will center the div horizontally */
+            text-align: center; /* This will center the content inside the div */
+            
+            width: 100%; /* This will ensure the div takes up the available width */
+
+            border-radius: 20px;
+            margin-top: 60px;
         }
 
         .transactions ul {
             list-style-type: none;
             padding: 0;
+            margin: 0;
         }
 
         .transactions li {
             display: inline-block;
             padding: 1rem;
-            background-color: #FF6060;
-            margin-right: 1rem;
+            margin-left: 60px; /* Adjust the margin based on your design */
             color: #fff;
             border-radius: 24px;
         }
 
-        footer {
-            text-align: center;
-            padding: 1rem;
-            background-color: #FFAEAE;
-            color: #fff;
+        .transactions img {
+            width: 40px; /* Adjust the width of the image */
+            height: 40px; /* Adjust the height of the image */
+            margin-bottom: 5px; /* Adjust the spacing between the image and text */
         }
     </style>
+
+    <style>
+        button {
+            width: 140px;
+            height: 140px;
+            color: #090909;
+            padding: 0.7em 1.7em;
+            font-size: 18px;
+            border-radius: 0.5em;
+            background: #e8e8e8;
+            border: 1px solid #e8e8e8;
+            transition: all .3s;
+            box-shadow: 0px 12px 16px rgba(0, 0, 0, 0.25);
+        }
+
+        button:hover {
+            border: 1px solid #2C2018;
+            cursor: pointer;    
+        }
+
+        button:active {
+            box-shadow: 4px 4px 12px #c5c5c5,
+                    -4px -4px 12px #ffffff;
+        }
+
+    </style>
+
 </head>
 
 <body>
     <header>
-        <img src="{% static 'UCCB-nobg.png' %}" alt="logo">
-        <a href="{% url 'logout' %}">Log Out</a>
+        <img src="{% static 'UCCBwhite-nobg.png' %}" alt="logo">
+        <a href="{% url 'logout' %}"><button>Log Out</button></a>
+        
     </header>
 
     <main>
@@ -139,20 +200,16 @@
         </div>
 
         <div class="transactions">
-            <h3>Transactions</h3>
             <ul>
-                <li><a href="{% url 'make_deposit' customer.id %}">Make Deposit</a></li>
-                <li><a href="{% url 'make_withdrawal' customer.id %}">Make Withdrawal</a></li>
-                <li><a href="{% url 'transaction_history' customer.id %}">Transaction History</a></li>
-                <!-- Add links for other functionalities as needed -->
-                <li><a href="{% url 'make_transfer' customer.id %}">Make Transfer</a></li>
+                <li><a href="{% url 'make_deposit' customer.id %}"><button><img src="{% static 'deposit.png' %}" alt="Deposit Image"><br>Deposit</button></a></li>
+                <li><a href="{% url 'make_withdrawal' customer.id %}"><button><img src="{% static 'withdraw.png' %}" alt="Withdraw Image"><br>Withdraw</button></a></li>
+                <li><a href="{% url 'make_transfer' customer.id %}"><button><img src="{% static 'transfer.png' %}" alt="Transfer Image"><br>Transfer</button></a></li>
+                <li><a href="{% url 'transaction_history' customer.id %}"><button><img src="{% static 'history.png' %}" alt="History Image"><br>History</button></a></li>
             </ul>
+
         </div>
     </main>
- 
-    <footer>
-        <p>&copy; 2023 FGHK Bank</p>
-    </footer>
+
 </body>
 
 </html>
