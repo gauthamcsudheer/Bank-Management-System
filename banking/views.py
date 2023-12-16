@@ -13,14 +13,14 @@ from django.core.exceptions import PermissionDenied
 
 from decimal import Decimal
 
-from .forms import LoginForm
+from .forms import LoginForm, ManagerSignupForm
 
 from .forms import SignupForm, DepositForm, WithdrawalForm, TransferForm
-from .models import Customer, Account, Transaction
+from .models import Customer, Account, Transaction, Manager
 
 from django.contrib.auth.decorators import user_passes_test
 
-from django.views.generic import TemplateView
+from django.contrib import messages
 
 def customer_list(request):
     customers = Customer.objects.all()
@@ -243,3 +243,56 @@ def make_transfer(request, customer_id):
     template_name = 'make_transfer.html'
     return render(request, template_name, {'sender': sender, 'transfer_form': transfer_form})
     
+
+
+
+def manager_signup(request):
+    if request.method == 'POST':
+        form = ManagerSignupForm(request.POST)
+        if form.is_valid():
+            managerid = form.cleaned_data['managerid']
+            password = form.cleaned_data['password']
+            
+            # Create a new User
+            user = User.objects.create_user(username=managerid, password=password)
+
+            # Create a new Manager
+            manager = Manager.objects.create(user=user, managerid=managerid, password=password)
+
+            messages.success(request, 'Manager account created successfully. You can now log in.')
+            return redirect('manager_login')
+
+    else:
+        form = ManagerSignupForm()
+
+    return render(request, 'manager_signup.html', {'form': form})
+
+def manager_login(request):
+    if request.method == 'POST':
+        managerid = request.POST['managerid']
+        password = request.POST['password']
+
+        # Authenticate manager
+        user = authenticate(request, username=managerid, password=password)
+
+        if user is not None:
+            # Log in the manager
+            login(request, user)
+            return redirect('manager_dashboard')
+        else:
+            messages.error(request, 'Invalid managerid or password.')
+
+    return render(request, 'manager_login.html')
+
+@login_required
+def manager_dashboard(request):
+    if not request.user.is_manager:
+        raise PermissionDenied("You don't have permission to view the manager dashboard.")
+
+    customers = Customer.objects.all()
+    return render(request, 'manager_dashboard.html', {'customers': customers})
+
+def customer_details(request, customer_id):
+    customer = get_object_or_404(Customer, pk=customer_id)
+    return render(request, 'customer_details.html', {'customer': customer})
+

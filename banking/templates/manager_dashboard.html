@@ -1,0 +1,18 @@
+<!-- banking/templates/manager_dashboard.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manager Dashboard</title>
+</head>
+<body>
+  <h2>Manager Dashboard</h2>
+  <ul>
+    {% for customer in customers %}
+      <li><a href="{% url 'customer_details' customer.id %}">{{ customer.name }}</a></li>
+    {% endfor %}
+  </ul>
+</body>
+</html>

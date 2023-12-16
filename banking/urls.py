@@ -11,4 +11,9 @@ urlpatterns = [
     path('make-deposit/<int:customer_id>/', views.make_deposit, name='make_deposit'),
     path('make-withdrawal/<int:customer_id>/', views.make_withdrawal, name='make_withdrawal'),
     path('make-transfer/<int:customer_id>/', views.make_transfer, name='make_transfer'),
+
+    path('manager-login/', views.manager_login, name='manager_login'),
+    path('manager-signup/', views.manager_signup, name='manager_signup'),
+    path('manager-dashboard/', views.manager_dashboard, name='manager_dashboard'),
+    path('customer-details/<int:customer_id>/', views.customer_details, name='customer_details'),
 ]

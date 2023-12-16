@@ -1,0 +1,19 @@
+<!-- banking/templates/manager_signup.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manager Signup</title>
+</head>
+<body>
+  <h2>Manager Signup</h2>
+  <form method="post" action="{% url 'manager_signup' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Sign Up</button>
+  </form>
+</body>
+</html>
+

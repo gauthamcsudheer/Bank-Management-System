@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Details: {{ customer.name }}</title>
+</head>
+<body>
+  <h2>Customer Details: {{ customer.name }}</h2>
+  
+  <img src="{{ customer.photo.url }}" alt="{{ customer.name }} Photo" width="100">
+  
+  <p>Email: {{ customer.email }}</p>
+  <p>Phone Number: {{ customer.phone_number }}</p>
+  
+  <h3>Account Details</h3>
+  <p>Account Number: {{ customer.account.account_number }}</p>
+  <p>Balance: ${{ customer.account.balance }}</p>
+  
+  <h3>Transaction History</h3>
+  <ul>
+    {% for transaction in customer.account.transaction_set.all %}
+      <li>{{ transaction.transaction_type }} - ${{ transaction.amount }} - {{ transaction.timestamp }}</li>
+    {% endfor %}
+  </ul>
+
+  <!-- Add other customer details as needed -->
+</body>
+</html>

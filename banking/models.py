@@ -27,3 +27,16 @@ class Transaction(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     transaction_type = models.CharField(max_length=10)  # 'deposit' or 'withdraw'
     timestamp = models.DateTimeField(auto_now_add=True)
+
+class Manager(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    managerid = models.CharField(max_length=8, unique=True)  # e.g., '2103092'
+    password = models.CharField(max_length=255)  # You should hash the passwords in a real-world scenario
+
+    @property
+    def is_manager(self):
+        # Add any condition to identify managers, for example, a specific flag or attribute
+        return True
+
+# Add a custom manager to the User model
+User.add_to_class("is_manager", property(lambda u: hasattr(u, 'manager')))

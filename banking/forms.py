@@ -59,3 +59,20 @@ class WithdrawalForm(forms.Form):
 class TransferForm(forms.Form):
     recipient_account_number = forms.IntegerField(label='Recipient Account Number')
     amount = forms.DecimalField(label='Amount', min_value=0.01)
+
+
+
+class ManagerSignupForm(forms.Form):
+    managerid = forms.CharField(label='Manager ID', max_length=8)
+    password = forms.CharField(label='Password', widget=forms.PasswordInput)
+    confirm_password = forms.CharField(label='Confirm Password', widget=forms.PasswordInput)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get("password")
+        confirm_password = cleaned_data.get("confirm_password")
+
+        if password != confirm_password:
+            raise forms.ValidationError("Passwords do not match. Please enter matching passwords.")
+
+        return cleaned_data
