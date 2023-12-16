@@ -159,7 +159,7 @@
 
         {% csrf_token %}
 
-        <h1>Make Transfer</h1>
+        <h1>Transfer</h1>
 
         {% if error %}
             <p class="error-message">{{ error }}</p>
@@ -176,7 +176,7 @@
             {{ transfer_form.amount }}
         </div>
 
-        <button type="submit">Transfer</button>
+        <button type="submit">Confirm</button>
     </form>
 
 </body>
