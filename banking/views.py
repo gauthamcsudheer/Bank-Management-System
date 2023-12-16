@@ -18,6 +18,10 @@ from .forms import LoginForm
 from .forms import SignupForm, DepositForm, WithdrawalForm, TransferForm
 from .models import Customer, Account, Transaction
 
+from django.contrib.auth.decorators import user_passes_test
+
+from django.views.generic import TemplateView
+
 def customer_list(request):
     customers = Customer.objects.all()
     return render(request, 'customer_list.html', {'customers': customers})
@@ -238,3 +242,4 @@ def make_transfer(request, customer_id):
 
     template_name = 'make_transfer.html'
     return render(request, template_name, {'sender': sender, 'transfer_form': transfer_form})
+    
