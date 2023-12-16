@@ -1,29 +1,177 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Customer Details: {{ customer.name }}</title>
-</head>
-<body>
-  <h2>Customer Details: {{ customer.name }}</h2>
-  
-  <img src="{{ customer.photo.url }}" alt="{{ customer.name }} Photo" width="100">
-  
-  <p>Email: {{ customer.email }}</p>
-  <p>Phone Number: {{ customer.phone_number }}</p>
-  
-  <h3>Account Details</h3>
-  <p>Account Number: {{ customer.account.account_number }}</p>
-  <p>Balance: ${{ customer.account.balance }}</p>
-  
-  <h3>Transaction History</h3>
-  <ul>
-    {% for transaction in customer.account.transaction_set.all %}
-      <li>{{ transaction.transaction_type }} - ${{ transaction.amount }} - {{ transaction.timestamp }}</li>
-    {% endfor %}
-  </ul>
 
-  <!-- Add other customer details as needed -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Details: {{ customer.name }} - FGHK Bank</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+
+    {% load static %}
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            background-color: #f1dabf;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background-color: rgba(44, 32, 24, 0.75);
+            color: #fff;
+        }
+
+        header img {
+            height: 70px;
+            border-radius: 20px;
+        }
+
+        header .home-btn {
+            background-color: #fff;
+            border: none;
+            cursor: pointer;
+            margin: 0;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        header .home-btn img {
+            width: 40px; /* Adjust the width as needed */
+            height: 40px; /* Adjust the height as needed */
+            border-radius: 50%;
+        }
+
+        h1 {
+            margin: 0;
+            margin-bottom: 1rem;
+            font-size: 40px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        main {
+            padding: 2rem;
+        }
+
+        .details-container {
+            background-color: rgba(255, 255, 255, 0.6);
+            border-radius: 20px;
+            margin-top: 20px;
+            padding: 20px;
+            box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.25);
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+        }
+
+        .profile img {
+            margin-left: 32px;
+            padding: 20px;
+            height: 200px;
+            border-radius: 40px;
+            margin-right: 1rem;
+        }
+
+        .profile-info {
+            margin-left: 32px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .profile ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .profile li {
+            padding: 0.5rem 0;
+            font-size: 20px;
+        }
+
+        .details-container h2 {
+            margin-top: 0;
+        }
+
+        .details-container p {
+            margin-top: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: rgba(44, 32, 24, 0.50);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <img src="{% static 'UCCBwhite-nobg.png' %}" alt="logo">
+        <a href="{% url 'manager_dashboard' %}" class="home-btn">
+            <img src="{% static 'home.svg' %}" alt="homeIcon">
+        </a>
+    </header>
+
+    <main>
+
+        <div class="details-container">
+            <div class="profile">
+                <img src="{% if customer.photo %}{{ customer.photo.url }}{% else %}{% static 'default_profile.jpg' %}{% endif %}" alt="Profile photo">
+
+                <div class="profile-info">
+                    <h1>Details of {{ customer.name }}</h1>
+
+                    <ul>
+                        <li>Account Number: <b>{{ customer.account.account_number }}</b></li>
+                        <li>Email id: {{ customer.email }}</li>
+                        <li>Phone Number: {{ customer.phone_number }}</li>
+                        <li>Current Balance: ₹{{ customer.account.balance }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="details-container">
+            <h3>Transaction History</h3>
+            <table>
+                <tr>
+                    <th>Transaction Type</th>
+                    <th>Amount</th>
+                    <th>Timestamp</th>
+                </tr>
+                {% for transaction in customer.account.transaction_set.all %}
+                    <tr>
+                        <td>{{ transaction.transaction_type }}</td>
+                        <td>₹{{ transaction.amount }}</td>
+                        <td>{{ transaction.timestamp }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </main>
 </body>
+
 </html>
