@@ -284,6 +284,11 @@ def manager_login(request):
 
     return render(request, 'manager_login.html')
 
+def customer_details(request, customer_id):
+    customer = get_object_or_404(Customer, pk=customer_id)
+    return render(request, 'customer_details.html', {'customer': customer})
+
+
 @login_required
 def manager_dashboard(request):
     if not request.user.is_manager:
@@ -292,7 +297,18 @@ def manager_dashboard(request):
     customers = Customer.objects.all()
     return render(request, 'manager_dashboard.html', {'customers': customers})
 
-def customer_details(request, customer_id):
-    customer = get_object_or_404(Customer, pk=customer_id)
-    return render(request, 'customer_details.html', {'customer': customer})
+def delete_customer(request, customer_id):
+    if request.method == 'POST':
+        customer = get_object_or_404(Customer, pk=customer_id)
 
+        # Deleting related data (e.g., accounts and transactions)
+        customer.account.delete()
+
+        # Delete the associated user from Django's User model
+        user = customer.user
+        user.delete()
+
+        messages.success(request, 'Customer deleted successfully.')
+        return redirect('manager_dashboard')
+
+    return redirect('manager_dashboard')  # Redirect in case of GET request or invalid request

@@ -19,4 +19,6 @@ urlpatterns = [
      path('manager_logout/', auth_views.LogoutView.as_view(next_page='manager_login'), name='manager_logout'),
     path('manager-dashboard/', views.manager_dashboard, name='manager_dashboard'),
     path('customer-details/<int:customer_id>/', views.customer_details, name='customer_details'),
+
+    path('delete-customer/<int:customer_id>/', views.delete_customer, name='delete_customer'),
 ]

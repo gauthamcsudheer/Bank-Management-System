@@ -18,7 +18,7 @@
             margin: 0;
             background-color: #f1dabf;
         }
-
+    
         header {
             display: flex;
             justify-content: space-between;
@@ -27,12 +27,12 @@
             background-color: rgba(44, 32, 24, 0.75);
             color: #fff;
         }
-
+    
         header img {
             height: 70px;
             border-radius: 20px;
         }
-
+    
         header .home-btn {
             background-color: #fff;
             border: none;
@@ -41,28 +41,28 @@
             padding: 10px;
             border-radius: 10px;
         }
-
+    
         header .home-btn img {
             width: 40px; /* Adjust the width as needed */
             height: 40px; /* Adjust the height as needed */
             border-radius: 50%;
         }
-
+    
         h1 {
             margin: 0;
             margin-bottom: 1rem;
             font-size: 40px;
         }
-
+    
         a {
             text-decoration: none;
             color: #fff;
         }
-
+    
         main {
             padding: 2rem;
         }
-
+    
         .details-container {
             background-color: rgba(255, 255, 255, 0.6);
             border-radius: 20px;
@@ -70,12 +70,12 @@
             padding: 20px;
             box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.25);
         }
-
+    
         .profile {
             display: flex;
             align-items: center;
         }
-
+    
         .profile img {
             margin-left: 32px;
             padding: 20px;
@@ -83,46 +83,90 @@
             border-radius: 40px;
             margin-right: 1rem;
         }
-
+    
         .profile-info {
             margin-left: 32px;
             display: flex;
             flex-direction: column;
         }
-
+    
         .profile ul {
             list-style-type: none;
             padding: 0;
             margin: 0;
         }
-
+    
         .profile li {
             padding: 0.5rem 0;
             font-size: 20px;
         }
-
+    
         .details-container h2 {
             margin-top: 0;
         }
-
+    
         .details-container p {
             margin-top: 0;
         }
-
+    
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
         }
-
+    
         th, td {
             padding: 15px;
             text-align: left;
             border-bottom: 1px solid #ddd;
         }
-
+    
         th {
             background-color: rgba(44, 32, 24, 0.50);
+        }
+    
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    
+        .header-section h1 {
+            margin: 0;
+            margin-bottom: 1rem;
+            margin-right: 360px;
+            font-size: 40px;
+        }
+    
+        .header-section button {
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            width: 100px;
+            margin-right: 32px;
+            margin-bottom: 12px;
+            border-radius: 10px;
+        }
+    
+        #printButton {
+            background-color: #22DD22; /* Green background for Print button */
+            color: #fff;
+        }
+
+        #printButton:hover {
+            background-color: #20CC20;
+            transition: 300ms;
+        }
+    
+        #deleteButton {
+            background-color: #DD2222; /* Red background for Delete button */
+            color: #fff;
+        }
+
+        #deleteButton:hover {
+            background-color: #BB2020; /* Red background for Delete button */
+            transition: 300ms;
         }
     </style>
 </head>
@@ -136,13 +180,21 @@
     </header>
 
     <main>
-
         <div class="details-container">
             <div class="profile">
                 <img src="{% if customer.photo %}{{ customer.photo.url }}{% else %}{% static 'default_profile.jpg' %}{% endif %}" alt="Profile photo">
 
                 <div class="profile-info">
-                    <h1>Details of {{ customer.name }}</h1>
+                    <div class="header-section">
+                        <h1>{{ customer.name }}</h1>
+                        <button id="printButton">Print</button>
+
+                        <!-- Updated form for deletion -->
+                        <form id="deleteForm" method="post" action="{% url 'delete_customer' customer.id %}">
+                            {% csrf_token %}
+                            <button type="submit" id="deleteButton">Delete</button>
+                        </form>
+                    </div>
 
                     <ul>
                         <li>Account Number: <b>{{ customer.account.account_number }}</b></li>
@@ -172,6 +224,21 @@
             </table>
         </div>
     </main>
+
+    <script>
+        function printPage() {
+            window.print();
+        }
+
+        function deleteCustomer() {
+            if (confirm("Are you sure you want to delete this customer?")) {
+                document.getElementById('deleteForm').submit();
+            }
+        }
+
+        document.getElementById('printButton').addEventListener('click', printPage);
+        document.getElementById('deleteButton').addEventListener('click', deleteCustomer);
+    </script>
 </body>
 
 </html>
