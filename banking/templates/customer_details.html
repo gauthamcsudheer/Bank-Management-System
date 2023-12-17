@@ -231,8 +231,15 @@
         }
 
         function deleteCustomer() {
-            if (confirm("Are you sure you want to delete this customer?")) {
+            // Display a confirmation dialog
+            var isConfirmed = confirm("Are you sure you want to delete this customer?");
+            
+            // Check if the user confirmed the deletion
+            if (isConfirmed) {
                 document.getElementById('deleteForm').submit();
+            } else {
+                // If user cancels, prevent the default form submission
+                event.preventDefault();
             }
         }
 
